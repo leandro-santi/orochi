@@ -73,7 +73,9 @@ public class Snake extends JPanel implements ActionListener, KeyListener {
             Tilemap snakePart = snakeBody.get(i);
             g.fillRect(snakePart.x * tileSize, snakePart.y * tileSize, tileSize, tileSize);
         }
+
         g.setFont(new Font("Arial", Font.PLAIN, 16));
+
         if (gameOver) {
             g.setColor(Color.RED);
             g.drawString("Game Over: " + String.valueOf(snakeBody.size()), tileSize - 16, tileSize);
@@ -89,6 +91,7 @@ public class Snake extends JPanel implements ActionListener, KeyListener {
     public void move() {
         Tilemap newHead = new Tilemap(snakeHead.x + vX, snakeHead.y + vY);
 
+        // Check collision with orochi's body
         for (Tilemap snakePart : snakeBody) {
             if (collision(newHead, snakePart)) {
                 gameOver = true;
@@ -97,6 +100,7 @@ public class Snake extends JPanel implements ActionListener, KeyListener {
             }
         }
 
+        // Moving orochi's body to next positions
         for (int i = snakeBody.size() - 1; i >= 0; i--) {
             Tilemap snakePart = snakeBody.get(i);
             if (i == 0) {
@@ -111,6 +115,7 @@ public class Snake extends JPanel implements ActionListener, KeyListener {
 
         snakeHead = newHead;
 
+        // Check collision with foods
         if (collision(snakeHead, food)) {
             snakeBody.add(new Tilemap(food.x, food.y));
             placeFood();
